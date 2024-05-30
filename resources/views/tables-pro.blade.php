@@ -1,13 +1,13 @@
 @extends('/layout.adminlayout')
 
-@section('title', 'Receipes')
+@section('title', 'Product')
 
 @section('content')
 
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Blog</h1>
+        <h1 class="h3 mb-2 text-gray-800">Produk</h1>
 
 
         <!-- DataTales Example -->
@@ -24,6 +24,10 @@
                             <a href="/product-admin/3" class="btn btn-secondary btn-circle">
                                 <i class="fa fa-reply"></i>
                             </a>
+                            <a href="#" id="2" class="btn btn-danger dump btn-circle" data-toggle="tooltip"
+                                data-placement="top" title="Clear Trash">
+                                <i class="fa-solid fa-dumpster"></i>
+                            </a>
                         @endif
                     </h6>
                 </h6>
@@ -36,6 +40,7 @@
                                 <th>Nama</th>
                                 <th>Kategori</th>
                                 <th>Principal</th>
+                                <th>Deskripsi</th>
                                 <th>Gambar</th>
                                 <th>Action</th>
                             </tr>
@@ -75,6 +80,10 @@
                                             <a href="#" class="trash btn btn-primary btn-circle"
                                                 id="0/{{ $data->id_produk }}">
                                                 <i class="fa fa-undo"></i>
+                                            </a>
+                                            <a href="#" class="trash btn btn-danger btn-circle"
+                                                id="2/{{ $data->id_produk }}">
+                                                <i class="fa fa-trash"></i>
                                             </a>
                                         @endif
                                     </td>
@@ -123,11 +132,25 @@
             var a = this.id;
             console.log(a);
 
-            alertify.confirm("This is a confirm dialog.",
+            alertify.confirm("Apakah anda yakin ?",
                 function() {
 
                     alertify.success('Ok');
                     location.href = "/remove-product/5/" + a;
+                },
+                function() {
+                    alertify.error('Cancel');
+                });
+        });
+
+        $(document).on('click', '.dump', function() {
+            var a = this.id;
+
+            alertify.confirm("Apakah anda yakin menghapus permanen semua item ?",
+                function() {
+
+                    alertify.success('Ok');
+                    location.href = "/clear-trash/" + a;
                 },
                 function() {
                     alertify.error('Cancel');

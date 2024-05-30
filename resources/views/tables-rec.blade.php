@@ -28,6 +28,10 @@
                         <a href="/receipes-admin/1" class="btn btn-secondary btn-circle">
                             <i class="fa fa-reply"></i>
                         </a>
+                        <a href="#" id="1" class="btn btn-danger dump btn-circle" data-toggle="tooltip"
+                            data-placement="top" title="Clear Trash">
+                            <i class="fa-solid fa-dumpster"></i>
+                        </a>
                     @endif
                 </h6>
             </div>
@@ -83,6 +87,10 @@
                                                 id="0/{{ $data->id_menu }}">
                                                 <i class="fa fa-undo"></i>
                                             </a>
+                                            <a href="#" class="trash btn btn-danger btn-circle"
+                                                id="2/{{ $data->id_menu }}">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
                                         @endif
                                         <!-- Logout Modal-->
 
@@ -100,11 +108,24 @@
         $(document).on('click', '.trash', function() {
             var a = this.id;
 
-            alertify.confirm("This is a confirm dialog.",
+            alertify.confirm("Apakah anda yakin ?",
                 function() {
 
                     alertify.success('Ok');
                     location.href = "/remove-receipes/1/" + a;
+                },
+                function() {
+                    alertify.error('Cancel');
+                });
+        });
+        $(document).on('click', '.dump', function() {
+            var a = this.id;
+
+            alertify.confirm("Apakah anda yakin menghapus permanen semua item ?",
+                function() {
+
+                    alertify.success('Ok');
+                    location.href = "/clear-trash/" + a;
                 },
                 function() {
                     alertify.error('Cancel');

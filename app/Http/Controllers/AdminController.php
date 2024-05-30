@@ -10,6 +10,7 @@ use App\Models\Content;
 use App\Models\Blog;
 use App\Models\Instagram;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
@@ -82,6 +83,9 @@ class AdminController extends Controller
                 $data = Content::first();
 
                 return view('tables-con', compact(['data']));
+            } elseif ($id == 5) {
+                $data = Category::orderBy('kategori', 'asc')->get();
+                return view('tables-cat', compact(['data']));
             }
         } else {
             return redirect('home');
@@ -134,7 +138,7 @@ class AdminController extends Controller
                 $data = Content::first();
                 return view('edits', compact(['data', 'id']));
             } elseif ($id == 7) {
-                $data = Instagram::where('id_ig', $idr)->first();
+                $data = Category::where('id_cat', $idr)->first();
                 return view('edits', compact(['data', 'id']));
             }
         } else {
@@ -170,6 +174,14 @@ class AdminController extends Controller
                     $data
                         ->update(['status' => 1]);
                 }
+                if ($ids == 2) {
+                    Storage::delete($data->gambar_path);
+                    if (isset($data->video_path)) {
+                        Storage::delete($data->video_path);
+                    }
+                    $data->delete();
+                    return redirect('/receipes-trash/' . $id);
+                }
                 return redirect('/receipes-admin/' . $id);
             } elseif ($id == 2) {
                 $data = Blog::find($idr);
@@ -200,6 +212,11 @@ class AdminController extends Controller
                         ->update(['status' => 1]);
                     return redirect('/pages/0');
                 }
+                if ($ids == 2) {
+                    Storage::delete($data->gambar);
+                    $data->delete();
+                    return redirect('/pages/0');
+                }
             } elseif ($id == 5) {
                 $data = Product::find($idr);
 
@@ -213,6 +230,12 @@ class AdminController extends Controller
                         ->update(['status' => 1]);
                     return redirect('/product-admin/3');
                 }
+                if ($ids == 2) {
+                    Storage::delete($data->gambar);
+
+                    $data->delete();
+                    return redirect('/product-trash/3');
+                }
                 return redirect('/product-admin/3');
             }
         } else {
@@ -220,43 +243,7 @@ class AdminController extends Controller
         }
     }
 
-    public function delete($id, $idr)
-    {
-        if (session::has('login')) {
 
-            if ($id == 1) {
-                $data = Menu::find($idr);
-                if ($data->gambar_path != null) {
-                    Storage::delete($data->gambar_path);
-                }
-                if ($data->video_path != null) {
-                    Storage::delete($data->video_path);
-                }
-                $data->delete();
-
-                return redirect('/receipes-admin/' . $id);
-            } elseif ($id == 2) {
-                $data = Blog::find($idr);
-                if ($data->gambar_blog != null) {
-                    Storage::delete($data->gambar_blog);
-                }
-                if ($data->video_blog != null) {
-                    Storage::delete($data->video_blog);
-                }
-                $data->delete();
-                return redirect('/blog-admin/' . $id);
-            } elseif ($id == 3) {
-                $data = Hero::find($idr);
-                if ($data->gambar != null) {
-                    Storage::delete($data->gambar);
-                }
-                $data->delete();
-                return redirect('/pages/1');
-            }
-        } else {
-            return redirect('home');
-        }
-    }
 
     public function editAction(Request $req)
     {
@@ -368,23 +355,52 @@ class AdminController extends Controller
                     ]);
 
                 return redirect('/product-admin/3');
+            } elseif ($d['path'] == 6) {
+                $data = Content::first();
+                $data
+                    ->update([
+                        'prim_about' => $d['prim_about'],
+                        'sec_about' => $d['sec_about'],
+                        'visi' => $d['visi'],
+                        'misi' => $d['misi'],
+                        'desc_cont' => $d['desc_cont'],
+                        'alamat1' => $d['alamat1'],
+                        'alamat2' => $d['alamat2'],
+                        'no_hp1' => $d['no_hp1'],
+                        'no_hp2' => $d['no_hp2'],
+                        'no_hp3' => $d['no_hp3'],
+                        'email1' => $d['email1'],
+                        'email2' => $d['email2'],
+                        'email3' => $d['email3'],
+                        'tentang_home' => $d['tentang_home'],
+                        'resep_desc' => $d['resep_desc'],
+                        'produk_desc' => $d['produk_desc'],
+
+
+
+
+                    ]);
+
+                return redirect('/content-admin/4');
             } elseif ($d['path'] == 7) {
-                $data = Instagram::find($d['id_ig']);
+                $data = Category::find($d['id_cat']);
+
                 if (isset($d['gambar'])) {
-                    Storage::delete($data->foto);
+                    Storage::delete($data->path);
 
                     $gambar = $req->file('gambar');
                     $ext = $gambar->extension();
-                    $gambar_path = $gambar->storeAs('public/user_upload/gambar/ig', 'ig' . $data->id_ig . '.' . strtolower($ext));
-                    $data->update(['foto' => $gambar_path]);
+                    $gambar_path = $gambar->storeAs('/img/logo', 'cat_' . $data->id_cat . '.' . strtolower($ext));
+
+                    $data->update(['path' => $gambar_path]);
                 }
                 $data
                     ->update([
-                        'nama' => $d['nama'],
-                        'link' => $d['link']
+                        'kategori' => $d['kategori'],
+                        'desk' => $d['desk']
                     ]);
 
-                return redirect('/pages/1');
+                return redirect('/content-admin/5');
             }
         } else {
             return redirect('home');
@@ -517,6 +533,41 @@ class AdminController extends Controller
             return response()->json([
                 'success' => 'Record deleted successfully!'
             ]);
+        }
+    }
+
+    public function clearTrash($path)
+    {
+        if ($path == 0) {
+            $data = Hero::where('status', 0)->get();
+            for ($i = 0; $i < count($data); $i++) {
+                Storage::delete($data[$i]->gambar);
+                $data[$i]->delete();
+            }
+            return redirect('/pages/0');
+        }
+        if ($path == 1) {
+            $data = Menu::where('status', 0)->get();
+            for ($i = 0; $i < count($data); $i++) {
+                if (isset($data[$i]->gambar_path)) {
+                    Storage::delete($data[$i]->gambar_path);
+                }
+                if (isset($data[$i]->video_path)) {
+                    Storage::delete($data[$i]->video_path);
+                }
+                $data[$i]->delete();
+            }
+            return redirect('/receipes-trash/1');
+        }
+        if ($path == 2) {
+            $data = Product::where('status', 0)->get();
+            for ($i = 0; $i < count($data); $i++) {
+                if (isset($data[$i]->gambar)) {
+                    Storage::delete($data[$i]->gambar);
+                }
+                $data[$i]->delete();
+            }
+            return redirect('/product-trash/3');
         }
     }
 }

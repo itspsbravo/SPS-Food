@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use App\Models\Proses;
 use App\Models\Bahan;
+use App\Models\Content;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -15,7 +16,8 @@ class ReceipeController extends Controller
     public function index()
     {
         $menus = Menu::where('status', 1)->orderBy('created_at', 'DESC')->Paginate(12);
-        return view('receipe', compact(['menus']));
+        $content = Content::first();
+        return view('receipe', compact(['menus', 'content']));
     }
 
     public function single_receipe($id)

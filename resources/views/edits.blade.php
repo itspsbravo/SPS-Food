@@ -302,8 +302,7 @@
                                 <p>Kategori</p>
                             </div>
 
-                            <select class="form-select" name="kategori" id="kategori" multiple
-                                aria-label="multiple select example">
+                            <select class="form-select" name="kategori" id="kategori">
                                 <option value="0" selected>Open this select menu</option>
                                 <option value="Bijag">Bijag</option>
                                 <option value="Kaca">Kaca</option>
@@ -311,6 +310,7 @@
                                 <option value="Mimora">Mimora</option>
                                 <option value="Padamu">Padamu</option>
                                 <option value="Vitarasa">Vitarasa</option>
+                                <option value="Bisohun">Bisohun</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -351,11 +351,102 @@
                         enctype="multipart/form-data" onsubmit="validateFormC(event)">
                         @csrf
                         @method('POST')
+                        <h1 class="h3 mb-2 text-gray-800">Content</h1>
                         <div class="form-group">
-                            <div class="mb-1 small">Description pada halaman contact</div>
-                            <textarea type="text" class="form-control " name="nama" id="nama" placeholder="Judul Modal">
+                            <div class="mb-1 small">Tentang - Home</div>
+                            <textarea type="text" class="form-control" rows="4" name="tentang_home" placeholder="Judul Modal">
+                                {{ $data->tentang_home }}
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">Resep - Desc</div>
+                            <textarea type="text" class="form-control" rows="4" name="resep_desc" placeholder="Resep deskripsi">
+                                {{ $data->resep_desc }}
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">Produk - Desc</div>
+                            <textarea type="text" class="form-control" rows="4" name="produk_desc" placeholder="Produk deskripsi">
+                                {{ $data->produk_desc }}
+                            </textarea>
+                        </div>
+
+
+                        <h1 class="h3 mb-2 text-gray-800">About</h1>
+                        <div class="form-group">
+                            <div class="mb-1 small">Tentang - Tentang Kami - Primary</div>
+                            <textarea type="text" class="form-control" rows="4" name="prim_about" placeholder="Judul Modal">
+                                {{ $data->prim_about }}
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">Tentang - Tentang Kami - Secondary</div>
+                            <textarea type="text" class="form-control" rows="4" name="sec_about" placeholder="Judul Modal">
+                                {{ $data->sec_about }}
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">Visi</div>
+                            <textarea type="text" class="form-control" rows="4" name="visi" placeholder="Judul Modal">
+                                {{ $data->visi }}
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">Misi</div>
+                            <textarea type="text" class="form-control" rows="4" name="misi" placeholder="Judul Modal">
+                                {{ $data->misi }}
+                            </textarea>
+                        </div>
+
+                        <h1 class="h3 mb-2 text-gray-800">Kontak</h1>
+                        <div class="form-group">
+                            <div class="mb-1 small">Deskripsi pada halaman contact</div>
+                            <input type="hidden" name="path" value="6">
+                            <textarea type="text" class="form-control" rows="4" name="desc_cont" id="nama"
+                                placeholder="Judul Modal">
                                 {{ $data->desc_cont }}
                             </textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">Alamat 1 pada halaman contact</div>
+                            <input type="text" class="form-control" name="alamat1" placeholder="Alamat1"
+                                value="{{ $data->alamat1 }}">
+
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">Alamat 2 pada halaman contact</div>
+                            <input type="text" class="form-control" name="alamat2" placeholder="Alamat 2"
+                                value="{{ $data->alamat2 }}">
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">No HP 1 pada halaman contact</div>
+                            <input type="text" class="form-control" name="no_hp1" placeholder="No HP 1"
+                                value="{{ $data->no_hp1 }}">
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">No HP 2 pada halaman contact</div>
+                            <input type="text" class="form-control" name="no_hp2" placeholder="No HP 2"
+                                value="{{ $data->no_hp2 }}">
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">No HP 3 pada halaman contact</div>
+                            <input type="text" class="form-control" name="no_hp3" placeholder="No HP 3"
+                                value="{{ $data->no_hp3 }}">
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">Email 1 pada halaman contact</div>
+                            <input type="text" class="form-control" name="email1" placeholder="Email 1"
+                                value="{{ $data->email1 }}">
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">Email 2 pada halaman contact</div>
+                            <input type="text" class="form-control" name="email2" placeholder="Email 2"
+                                value="{{ $data->email2 }}">
+                        </div>
+                        <div class="form-group">
+                            <div class="mb-1 small">Email 3 pada halaman contact</div>
+                            <input type="text" class="form-control" name="email3" placeholder="Email 3"
+                                value="{{ $data->email3 }}">
                         </div>
                         {{-- <input type="hidden" name="id_produk" value="{{ $data->id_produk }}">
                         <input type="hidden" name="path" value="4">
@@ -393,31 +484,33 @@
             @endif
             @if ($id == 7)
                 <div class="card-body">
-                    <form action="/edit-actionr" class="user" id="formIg" method="post"
-                        enctype="multipart/form-data" onsubmit="validateFormIg(event)">
+                    <form action="/edit-actionr" class="user" id="formCat" method="post"
+                        enctype="multipart/form-data" onsubmit="validateFormCat(event)">
                         @csrf
                         @method('POST')
                         <div class="form-group">
-                            <div class="mb-1 small">Nama</div>
-                            <input type="text" class="form-control form-control-user" name="nama" id="nama"
-                                value="{{ $data->nama }}" placeholder="Judul Modal">
+                            <div class="mb-1 small">Kategori</div>
+                            <input type="text" class="form-control form-control-user" name="kategori" id="kategori"
+                                value="{{ $data->kategori }}" placeholder="Kategori">
                         </div>
-                        <input type="hidden" name="id_ig" value="{{ $data->id_ig }}">
+                        <input type="hidden" name="id_cat" value="{{ $data->id_cat }}">
                         <input type="hidden" name="path" value="7">
                         <div class="form-group">
-                            <div class="mb-1 small">Link</div>
-                            <input type="text" class="form-control form-control-user" name="link" id="link"
-                                value="{{ $data->link }}" placeholder="Deskripsi">
+                            <div class="mb-1 small">Deskripsi</div>
+                            <textarea type="text" class="form-control" rows="4" name="desk" id="desk"
+                                placeholder="Deskripsi">
+                                {{ $data->desk }}
+                            </textarea>
                         </div>
                         <div class="form-group">
                             <div class="single-contact-information">
                                 <p>Gambar</p>
                             </div>
                             <input type="file" class="form-control-file" name="gambar" id="gambar"
-                                onchange="previewig(event)">
+                                onchange="previewcat(event)">
                             <br>
-                            @if ($data->gambar)
-                                <img src="/storage/public/{{ $data->foto }}" id="gambar-ig" class="img-thumbnail"
+                            @if ($data->path)
+                                <img src="/storage/public/{{ $data->path }}" id="gambar_cat" class="img-thumbnail"
                                     style="max-width: 250px" alt="...">
                             @endif
                         </div>
@@ -584,15 +677,15 @@
             }
         }
 
-        function validateFormIg(e) {
+        function validateFormCat(e) {
             e.preventDefault();
-
+            var kategori = document.getElementById("kategori").value;
+            var desk = document.getElementById("desk").value;
             var gambar = document.getElementById("gambar").value;
             if (gambar != "") {
                 var gambarsize = document.getElementById("gambar").files[0].size / 1024 / 1024;
             }
             var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-            var allowedExtensionsvids = /(\.mp4|\.avi|\.3gp|\.gif)$/i;
 
             if (gambar != "" && !allowedExtensions.exec(gambar)) {
                 alertify
@@ -600,8 +693,13 @@
                         alertify.message('OK');
                     });
                 return false;
-            }
-            if (gambarsize > 2) {
+            } else if (kategori == "" || desk == "") {
+                alertify
+                    .alert("Ooopss..", "Tidak boleh ada field kosong.", function() {
+                        alertify.message('OK');
+                    });
+                return false;
+            } else if (gambarsize > 2) {
                 alertify
                     .alert("Ooopss..", "Ukuran gambar terlalu besar.", function() {
                         alertify.message('OK');
@@ -611,7 +709,7 @@
                 alertify.confirm("This is a confirm dialog.",
                     function() {
                         alertify.success('Ok');
-                        document.getElementById('formIg').submit();
+                        document.getElementById('formCat').submit();
                     },
                     function() {
                         alertify.error('Cancel');
@@ -691,8 +789,8 @@
             output.src = URL.createObjectURL(event.target.files[0]);
         }
 
-        function previewig(e) {
-            var output = document.getElementById("gambar-ig");
+        function previewcat(e) {
+            var output = document.getElementById("gambar_cat");
             output.src = URL.createObjectURL(event.target.files[0]);
         }
     </script>
